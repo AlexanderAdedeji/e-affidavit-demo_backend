@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "e-affidavit demo"
+version = "0.1.0"
+description = ""
+authors = ["AlexAdedeji <alex.adedeji@identikosolutions.com>"]
+readme = "README.md"
+packages = [{include = "e_affidavit demo"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["all"], version = "^0.103.0"}
+sqlalchemy = "^2.0.20"
+psycopg2 = "^2.9.7"
+pyjwt = "^2.8.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+loguru = "^0.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
