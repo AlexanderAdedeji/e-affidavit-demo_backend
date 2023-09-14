@@ -14,5 +14,5 @@ class UserTypeUpdate(UserType):
 
 
 class UserTypeInDB(UserType):
-    id: int
+    id: str
 

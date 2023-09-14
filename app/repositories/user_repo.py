@@ -1,3 +1,4 @@
+import uuid
 from app.models.user_type_model import UserType
 
 from typing import Any, Dict, List, Optional, Union
@@ -5,8 +6,8 @@ from typing import Any, Dict, List, Optional, Union
 from app.core.settings.config import settings
 from app.models.user_model import User
 from commonLib.repositories.repository_class import Base
-from app.repositories.user_type_repo import user_type as user_type_repo
-from app.schemas.user import UserCreate, UserUpdate
+from app.repositories.user_type_repo import user_type_repo
+from app.schemas.user_schema import UserCreate, UserUpdate
 
 from app.core.settings.security import get_password_hash
 from sqlalchemy.orm import Session
@@ -24,17 +25,23 @@ class UserRepository(Base[User]):
 
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         db_obj = User(
+            id=str(uuid.uuid4()),
             first_name=obj_in.first_name,
             last_name=obj_in.last_name,
             email=obj_in.email,
-            user_type_id=obj_in.user_type_id
+            user_type_id=obj_in.user_type_id,
+            is_active=True
         )
+
+        
         
         db_obj.set_password(obj_in.password)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
+
+
 
     def update(
         self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]

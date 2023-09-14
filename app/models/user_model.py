@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+
 # from backend.app.schemas.reset_token import ResetTokenCreate
 import jwt
 from sqlalchemy.orm.session import Session
@@ -18,19 +19,18 @@ SUPERUSER_USER_TYPE = settings.SUPERUSER_USER_TYPE
 RESET_TOKEN_EXPIRE_MINUTES = settings.RESET_TOKEN_EXPIRE_MINUTES
 
 
-
-
 # docker-compose -f docker-compose-dev.yml run --publish 6543:5432 database
 class User(Base):
     __tablename__ = "user"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String, primary_key=True, index=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     phone = Column(String, unique=True, nullable=True)
     hashed_password = Column(String, nullable=False)
     address = Column(String, nullable=True)
-    user_type_id = Column(Integer, ForeignKey("usertype.id"), nullable=False)
+    is_active = Column(String, nullable=True)
+    user_type_id = Column(String, ForeignKey("usertype.id"), nullable=False)
     user_type = relationship("UserType", back_populates="users")
 
     @property
@@ -60,9 +60,4 @@ class User(Base):
         encoded_token = jwt.encode(
             payload=jwt_content, key=str(SECRET_KEY), algorithm=JWT_ALGORITHM
         )
-        return encoded_token.decode()
-
-
-
-
-
+        return encoded_token.encode()

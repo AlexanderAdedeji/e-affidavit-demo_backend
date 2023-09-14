@@ -34,24 +34,11 @@ HEADER_KEY = settings.HEADER_KEY
 
 
 SUPERUSER_USER_TYPE = settings.SUPERUSER_USER_TYPE
+COMMISSIONER_USER_TYPE=settings.COMMISSIONER_USER_TYPE
 
 
 
 
-
-
-class DeviceAPIKeyHeader(DefaultAPIKeyHeader):
-    async def __call__(
-        self,
-        request: requests.Request,
-    ) -> Optional[str]:
-        try:
-            return await super().__call__(request)
-        except StarletteHTTPException as original_auth_exc:
-            raise HTTPException(
-                status_code=original_auth_exc.status_code,
-                detail=INVALID_API_KEY,
-            )
 
 
 class JWTHeader(DefaultAPIKeyHeader):
@@ -125,6 +112,6 @@ manager_and_supervisor_and_superuser_permission_dependency = PermissionChecker(
     allowed_user_types=[SUPERUSER_USER_TYPE]
 )
 
-superuser_permission_dependency = PermissionChecker(
-    allowed_user_types=[SUPERUSER_USER_TYPE]
+commissioner_permission_dependency = PermissionChecker(
+    allowed_user_types=[COMMISSIONER_USER_TYPE]
 )

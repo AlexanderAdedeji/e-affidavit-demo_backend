@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, validator
 
-from app.schemas.user_type import UserTypeInDB
+from app.schemas.user_type_schema import UserTypeInDB
 from commonLib.models.base_class import Base
 
 
@@ -12,21 +12,18 @@ from app.core.services.validators import phone as phone_validators
 class User(BaseModel):
     first_name: str
     last_name: str
-    address: str
-    phone: str
+
 
 
 class UserCreate(User):
     email: EmailStr
     password: str
-    lasrra_id: str
-    user_type_id: int
-    created_by_id: Optional[int]
-    agent_id: Optional[int]
+    user_type_id: str
+    # user_type_id: int
 
-    @validator("phone")
-    def validate_phone(cls, value: str) -> str:
-        return phone_validators.validate_phone_number(value)
+    # @validator("phone")
+    # def validate_phone(cls, value: str) -> str:
+    #     return phone_validators.validate_phone_number(value)
 
 
 class UserUpdate(User):
@@ -53,23 +50,19 @@ class UserWithToken(BaseModel):
 class UserCreateForm(User):
     email: EmailStr
     password: str
-    user_type_id: int
+
 
 
 class UserInResponse(User):
-    id: int
+    id: str
     email: EmailStr
-    lasrra_id: str
     is_active: bool
-    is_superuser: bool
+
     user_type: UserTypeInDB
-    created_by_id: Optional[int]
-    agent_id: Optional[int]
-    agent_name: Optional[str]
 
 
 class SlimUserInResponse(BaseModel):
-    id: int
+    id: str
     email: EmailStr
     user_type: UserTypeInDB
 

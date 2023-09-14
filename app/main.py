@@ -6,6 +6,8 @@ import starlette.responses as _responses
 from app.core.settings.config import Settings
 from app.database.base import Base
 
+import psycopg2
+
 Base.metadata.create_all(bind=engine)
 origins = ["*"]
 
@@ -26,6 +28,12 @@ def create_application_instance() -> FastAPI:
 
 
 app = create_application_instance()
+
+
+
+
+
+
 
 
 @app.get("/")

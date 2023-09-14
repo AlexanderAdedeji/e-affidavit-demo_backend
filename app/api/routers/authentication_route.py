@@ -9,8 +9,8 @@ from app.core.errors.exceptions import (
 )
 
 from app.repositories.user_repo import user_repo
-from app.schemas.user import UserInLogin, UserWithToken
-from app.schemas.user_type import UserTypeInDB
+from app.schemas.user_schema import UserInLogin, UserWithToken
+from app.schemas.user_type_schema import UserTypeInDB
 from fastapi import APIRouter, Body, Depends
 from sqlalchemy.orm import Session
 
@@ -42,10 +42,10 @@ def login(
     if user is None or not user.verify_password(user_login.password):
         raise IncorrectLoginException()
 
-    if user.user_type.name not in [SUPERUSER_USER_TYPE]:
-        raise HTTPException(
-            status_code=HTTP_403_FORBIDDEN, detail=error_strings.UNAUTHORIZED_ACTION
-        )
+    # if user.user_type.name not in [SUPERUSER_USER_TYPE]:
+    #     raise HTTPException(
+    #         status_code=HTTP_403_FORBIDDEN, detail=error_strings.UNAUTHORIZED_ACTION
+    #     )
 
     if not user.is_active:
         raise DisallowedLoginException(detail=error_strings.INACTIVE_USER_ERROR)

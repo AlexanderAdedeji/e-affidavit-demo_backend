@@ -1,12 +1,17 @@
+import binascii
 import hashlib
 import time
 from datetime import datetime, timedelta
-
 from app.core.settings.config import settings
 from itsdangerous import URLSafeSerializer
 from passlib.context import CryptContext
 from passlib.hash import bcrypt
 from pydantic import EmailStr
+from fastapi import HTTPException
+from typing import Union, Optional
+import base64
+import logging
+
 
 RESET_TOKEN_EXPIRE_MINUTES = settings.RESET_TOKEN_EXPIRE_MINUTES
 SECRET_KEY = settings.SECRET_KEY
@@ -49,3 +54,38 @@ def decode_reset_token(token: str) -> EmailStr:
     if expires_at <= time.time():
         raise ValueError("expired token")
     return obj["email"]
+
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def convert_to_base_64(image: Union[bytes, bytearray]) -> Optional[str]:
+    try:
+        # Make sure the input is bytes or bytearray
+        if not isinstance(image, (bytes, bytearray)):
+            raise TypeError("Image should be bytes or bytearray")
+        
+        # Perform base64 encoding
+        base64_encoded = base64.b64encode(image).decode("utf-8")
+        
+        return base64_encoded
+    except Exception as e:
+        logger.error(f"Failed to convert image to base64: {e}")
+        raise HTTPException(status_code=400, detail="Invalid image data")
+
+def convert_to_image(b: str) -> Optional[bytes]:
+    try:
+        # Validate that the input is a base64 string
+        if not isinstance(b, str):
+            raise TypeError("Input should be a base64 encoded string")
+        
+        # Perform base64 decoding
+        base64_decoded = base64.b64decode(b)
+        
+        return base64_decoded
+    except (binascii.Error, TypeError, Exception) as e:
+        logger.error(f"Failed to convert base64 to image: {e}")
+        raise HTTPException(status_code=400, detail="Invalid base64 data")
+
+
