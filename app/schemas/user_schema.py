@@ -50,6 +50,7 @@ class UserWithToken(BaseModel):
 class UserCreateForm(User):
     email: EmailStr
     password: str
+    user_type:str
 
 
 
