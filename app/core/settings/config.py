@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     SUPERUSER_USER_TYPE:str
     COMMISSIONER_USER_TYPE:str
     VERIFIER_USER_TYPE:str
-    USER_TYPES:list
+    # USER_TYPES:list
 
     # USER_TYPES = collections.defaultdict(lambda: REGULAR_USER_TYPE)
 

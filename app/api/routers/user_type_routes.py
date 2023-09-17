@@ -26,9 +26,13 @@ from sqlalchemy.orm import Session
 from app.core.errors import error_strings
 
 
-
 SUPERUSER_USER_TYPE = settings.SUPERUSER_USER_TYPE
-DEFAULT_USER_TYPES = settings.USER_TYPES
+DEFAULT_USER_TYPES = [
+    settings.SUPERUSER_USER_TYPE,
+    settings.COMMISSIONER_USER_TYPE,
+    settings.REGULAR_USER_TYPE,
+    settings.VERIFIER_USER_TYPE,
+]
 
 router = APIRouter()
 

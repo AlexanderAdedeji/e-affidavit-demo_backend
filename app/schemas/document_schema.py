@@ -35,6 +35,8 @@ class DocumentQRCode(DocumentRef):
     qr_code: str
 
 
+
+
 class AttestDocument(BaseModel):
     document_ref:str
     document: str

@@ -79,7 +79,7 @@ class UserRepository(Base[User]):
 
     def set_as_superuser(self, db: Session, db_obj: User) -> User:
         superuser_type = user_type_repo.get_by_name(
-            db, name=USER_TYPES[SUPERUSER_USER_TYPE]
+            db, name=SUPERUSER_USER_TYPE
         )
         return self.set_usertype(db, db_obj=db_obj, user_type=superuser_type)
 
