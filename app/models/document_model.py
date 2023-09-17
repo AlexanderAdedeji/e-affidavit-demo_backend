@@ -10,6 +10,7 @@ class Document(Base):
     status = Column(String, nullable=False)
     document = Column(String, nullable=False)
     document_data = Column(String, nullable=False)
+    qr_code = Column(String, nullable=True)
     user_id = Column(String, nullable=False)
 
 

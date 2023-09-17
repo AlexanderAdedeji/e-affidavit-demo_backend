@@ -35,7 +35,11 @@ SUPERUSER_USER_TYPE = settings.SUPERUSER_USER_TYPE
 router = APIRouter()
 
 
-@router.post("/attestation_create", name="Attestation Create")
+@router.post(
+    "/attestation_create",
+    name="Attestation Create",
+    dependencies=[Depends(commissioner_permission_dependency)],
+)
 def create_attestation(
     attestation_in: AttestationBase,
     db: Session = Depends(get_db),
@@ -49,10 +53,10 @@ def create_attestation(
                 db, db_obj=attestation_exist, obj_in=attestation_in
             )
         else:
-            attestation_obj = AttestationInResponse(user_id=current_user.id,**attestation_in.dict())
-            new_attestation = attestation_repo.create(
-                db, obj_in=attestation_obj
+            attestation_obj = AttestationInResponse(
+                user_id=current_user.id, **attestation_in.dict()
             )
+            new_attestation = attestation_repo.create(db, obj_in=attestation_obj)
 
         return AttestationInResponse(
             user_id=new_attestation.user_id,
@@ -68,6 +72,7 @@ def create_attestation(
     name="Get Attestation",
     # response_model=AttestationInResponse,
     status_code=HTTP_200_OK,
+    dependencies=[Depends(commissioner_permission_dependency)],
 )
 def get_attestation(
     db: Session = Depends(get_db),
@@ -86,7 +91,6 @@ def get_attestation(
             signature=attestation_exist.signature,
             stamp=attestation_exist.stamp,
         )
-
 
     except Exception as e:
         raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

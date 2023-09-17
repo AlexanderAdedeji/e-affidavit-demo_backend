@@ -6,9 +6,7 @@ from pydantic import BaseModel
 class DocumentBase(BaseModel):
     document: str
     template_name: str
-
     document_data: dict
-    status: str
 
 
 class DocumentInResponse(DocumentBase):
@@ -16,6 +14,8 @@ class DocumentInResponse(DocumentBase):
     user_id: str
     document_ref: Optional[str]
     created_at: datetime.datetime
+    qr_code:Optional[str]
+    status:str
 
 
 class DocumentCreate(BaseModel):
@@ -32,4 +32,11 @@ class DocumentRef(BaseModel):
 
 
 class DocumentQRCode(DocumentRef):
-    qr_Code: str
+    qr_code: str
+
+
+class AttestDocument(BaseModel):
+    document_ref:str
+    document: str
+class AttestDocumentCreate(AttestDocument):
+    commissioner_id:str

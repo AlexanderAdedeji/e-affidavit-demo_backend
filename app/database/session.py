@@ -4,7 +4,7 @@ from app.core.settings.config import settings
 
 
 DATABASE_URL = (
-     
+    #  "sqlite:///./sql_app.db"
     f"postgresql+psycopg2://"
     f"identikoPostgresSqlDevAdmin@identiko-postgres-dev-server:"
     f"hd1KHyW7FFJGkpQ53t31@"
@@ -13,11 +13,15 @@ DATABASE_URL = (
 )
 
 
+
+
+
+
 def create_database_engine():
     # if settings.DEBUG:
-    #     url = settings.DEVELOPMENT_DATABASE_URL
+    #     DATABASE_URL = settings.DEVELOPMENT_DATABASE_URL
     # else:
-    #     url = settings.PRODUCTION_DATABASE_URL
+    #     DATABASE_URL = settings.PRODUCTION_DATABASE_URL
     return create_engine(DATABASE_URL, pool_pre_ping=True)
 
 
