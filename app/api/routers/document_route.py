@@ -165,9 +165,11 @@ def get_document(
         document_ref=document.document_ref,
         user_id=document.user_id,
         status=document.status,
+        qr_code=document.qr_code,
         document_data=json.loads(document.document_data),
         created_at=document.created_at,
     )
+
 
 
 @router.get("/pay_for_document")
@@ -237,7 +239,8 @@ def search_document_by_ref(
         document_ref=document.document_ref,
         user_id=document.user_id,
         status=document.status,
+        qr_code=document.qr_code,
         document_data=json.loads(document.document_data),
         created_at=document.created_at,
-        qr_code=document.qr_code,
+    
     )
