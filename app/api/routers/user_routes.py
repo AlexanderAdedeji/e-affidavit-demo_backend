@@ -6,7 +6,12 @@ from app.core.errors.exceptions import AlreadyExistsException, ServerException
 from app.repositories.user_repo import user_repo
 from app.repositories.user_type_repo import user_type_repo
 from app.core.settings.config import Settings
-from app.schemas.user_schema import UserCreate, UserInResponse,UserCreateForm
+from app.schemas.user_schema import (
+    UserCreate,
+    UserInResponse,
+    UserCreateForm,
+    UserUpdate,
+)
 from app.schemas.user_type_schema import UserTypeInDB
 
 
@@ -60,10 +65,36 @@ def user_create(
         first_name=user_in.first_name,
         last_name=user_in.last_name,
         is_active=user.is_active,
+        image=user.image,
         user_type=UserTypeInDB(id=user_type.id, name=user_type.name),
     )
 
 
+@router.post("/user_update")
+def user_update(
+    user_in: UserUpdate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_currently_authenticated_user),
+):
+    # check_unique_user(db, user_in)
+    user_type = user_type_repo.get(db, id=current_user.id)
+
+    # if not user_type:
+    #     raise ServerException()
+    # user = user_repo.create(
+    #     db,
+    #     obj_in=UserCreate(**user_in.dict(), user_type_id=user_type.id),
+    # )
+    user_obj = user_repo.get(db, id=current_user.id)
+    user_response = user_repo.update(db, db_obj=user_obj, obj_in=user_in)
+    return UserInResponse(
+        id=user_response.id,
+        email=user_response.email,
+        first_name=user_response.first_name,
+        last_name=user_response.last_name,
+        is_active=user_response.is_active,
+        user_type=UserTypeInDB(id=user_type.id, name=user_type.name),
+    )
 
 
 @router.post("/commissioner_create")

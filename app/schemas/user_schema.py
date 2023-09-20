@@ -14,7 +14,6 @@ class User(BaseModel):
     last_name: str
 
 
-
 class UserCreate(User):
     email: EmailStr
     password: str
@@ -30,9 +29,8 @@ class UserUpdate(User):
     email: Optional[EmailStr]
     first_name: Optional[str]
     last_name: Optional[str]
-    address: Optional[str]
-    phone: Optional[str]
     password: Optional[str] = None
+    image: Optional[str] = None
 
 
 class UserInLogin(BaseModel):
@@ -50,15 +48,14 @@ class UserWithToken(BaseModel):
 class UserCreateForm(User):
     email: EmailStr
     password: str
-    user_type:str
-
+    user_type: str
 
 
 class UserInResponse(User):
     id: str
     email: EmailStr
     is_active: bool
-
+    image: Optional[str]
     user_type: UserTypeInDB
 
 

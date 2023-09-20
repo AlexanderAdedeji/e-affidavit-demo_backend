@@ -30,8 +30,12 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     address = Column(String, nullable=True)
     is_active = Column(String, nullable=True)
+    image = Column(String, nullable=True)
     user_type_id = Column(String, ForeignKey("usertype.id"), nullable=False)
     user_type = relationship("UserType", back_populates="users")
+    
+
+
 
     @property
     def is_superuser(self):
