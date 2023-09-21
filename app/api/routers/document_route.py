@@ -247,18 +247,21 @@ def search_document_by_ref(
 
 @router.put("/document_update")
 def update_document(
-    document_in: DocumentUpdate,
+    document: DocumentUpdate,
     db: Session = Depends(get_db),
     current_user=Depends(get_currently_authenticated_user),
 ):
-    document_obj = document_repo.get(db, id=document_in.id)
+    document_obj = document_repo.get(db, id=document.id)
     if not document_obj:
         raise ObjectNotFoundException(detail="this document was not found")
     if document_obj.user_id != current_user.id:
         raise UnauthorizedEndpointException(
             detail="You are not the creator of this document"
         )
+    document_in = document.dict()
+    document_in["document_data"] = json.dumps(document_in["document_data"])
     updated_document = document_repo.update(db, db_obj=document_obj, obj_in=document_in)
+
     return DocumentInResponse(
         id=updated_document.id,
         document=updated_document.document,

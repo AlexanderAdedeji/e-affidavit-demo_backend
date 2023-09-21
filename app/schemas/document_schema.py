@@ -30,7 +30,7 @@ class DocumentCreate(BaseModel):
 class DocumentUpdate(BaseModel):
     document: str
     document_ref: Optional[str]
-    document_data: str
+    document_data: dict
     status: str
     id: str
     user_id: str
