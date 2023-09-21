@@ -27,6 +27,7 @@ from app.schemas.document_schema import (
     DocumentCreate,
     DocumentInResponse,
     DocumentQRCode,
+    DocumentUpdate,
 )
 from app.api.dependencies.db import get_db
 
@@ -171,7 +172,6 @@ def get_document(
     )
 
 
-
 @router.get("/pay_for_document")
 def pay_for_document(
     document_id: str,
@@ -242,5 +242,31 @@ def search_document_by_ref(
         qr_code=document.qr_code,
         document_data=json.loads(document.document_data),
         created_at=document.created_at,
-    
+    )
+
+
+@router.put("/document_update")
+def update_document(
+    document_in: DocumentUpdate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_currently_authenticated_user),
+):
+    document_obj = document_repo.get(db, id=document_in.id)
+    if not document_obj:
+        raise ObjectNotFoundException(detail="this document was not found")
+    if document_obj.user_id != current_user.id:
+        raise UnauthorizedEndpointException(
+            detail="You are not the creator of this document"
+        )
+    updated_document = document_repo.update(db, db_obj=document_obj, obj_in=document_in)
+    return DocumentInResponse(
+        id=updated_document.id,
+        document=updated_document.document,
+        template_name=updated_document.template_name,
+        document_ref=updated_document.document_ref,
+        user_id=updated_document.user_id,
+        status=updated_document.status,
+        qr_code=updated_document.qr_code,
+        document_data=json.loads(updated_document.document_data),
+        created_at=updated_document.created_at,
     )
