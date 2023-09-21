@@ -30,10 +30,19 @@ class DocumentCreate(BaseModel):
 class DocumentUpdate(BaseModel):
     document: str
     document_ref: Optional[str]
-    document_fileds: str
+    document_data: str
     status: str
     id: str
     user_id: str
+
+
+# class DocumentUpdateForm(BaseModel):
+#     document: str
+#     document_ref: Optional[str]
+#     document_fields: str
+#     status: str
+#     id: str
+#     user_id: str
 
 class DocumentRef(BaseModel):
     document_ref: str
