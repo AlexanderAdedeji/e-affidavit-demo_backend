@@ -39,7 +39,8 @@ class UserInLogin(BaseModel):
 
 
 class UserWithToken(BaseModel):
-    name: str
+    first_name: str
+    last_name:str
     email: EmailStr
     user_type: UserTypeInDB
     token: str

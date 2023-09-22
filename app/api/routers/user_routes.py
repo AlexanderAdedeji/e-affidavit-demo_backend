@@ -77,10 +77,10 @@ def user_update(
     current_user=Depends(get_currently_authenticated_user),
 ):
     # check_unique_user(db, user_in)
-    user_type = user_type_repo.get(db, id=current_user.id)
+    user_type = user_type_repo.get(db, id=current_user.user_type_id)
 
-    # if not user_type:
-    #     raise ServerException()
+    if not user_type:
+        raise ServerException()
     # user = user_repo.create(
     #     db,
     #     obj_in=UserCreate(**user_in.dict(), user_type_id=user_type.id),

@@ -18,18 +18,17 @@ from sqlalchemy.orm import Session
 SUPERUSER_USER_TYPE = settings.SUPERUSER_USER_TYPE
 
 
-
 router = APIRouter()
 
 
-@router.post("/login", 
-response_model=UserWithToken,
- name="Login",
- )
+@router.post(
+    "/login",
+    response_model=UserWithToken,
+    name="Login",
+)
 def login(
     db: Session = Depends(get_db),
     user_login: UserInLogin = Body(..., alias="user"),
-    
 ) -> UserWithToken:
     """
     This route expects you to supply your credentials and if valid, returns a JWT for you to use to authenticate future requests.
@@ -37,7 +36,6 @@ def login(
     """
 
     user = user_repo.get_by_email(db, email=user_login.email)
-    
 
     if user is None or not user.verify_password(user_login.password):
         raise IncorrectLoginException()
@@ -49,15 +47,12 @@ def login(
 
     if not user.is_active:
         raise DisallowedLoginException(detail=error_strings.INACTIVE_USER_ERROR)
-       
 
     token = user.generate_jwt()
     return UserWithToken(
-        name=f"{user.first_name} {user.last_name}",
+        first_name=user.first_name,
+        last_name=user.last_name,
         email=user.email,
         token=token,
         user_type=UserTypeInDB(id=user.user_type_id, name=user.user_type.name),
     )
-
-
-    
