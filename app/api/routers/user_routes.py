@@ -93,6 +93,7 @@ def user_update(
         first_name=user_response.first_name,
         last_name=user_response.last_name,
         is_active=user_response.is_active,
+        image=user_response.image,
         user_type=UserTypeInDB(id=user_type.id, name=user_type.name),
     )
 
@@ -118,6 +119,7 @@ def commissioner_create(
         first_name=user_in.first_name,
         last_name=user_in.last_name,
         is_active=user.is_active,
+        image=user.image,
         user_type=UserTypeInDB(id=user_type.id, name=user_type.name),
     )
 
@@ -143,5 +145,9 @@ def verifier_create(
         first_name=user_in.first_name,
         last_name=user_in.last_name,
         is_active=user.is_active,
+        image=user.image,
         user_type=UserTypeInDB(id=user_type.id, name=user_type.name),
     )
+
+
+
