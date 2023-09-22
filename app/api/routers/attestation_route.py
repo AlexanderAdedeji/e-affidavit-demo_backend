@@ -78,19 +78,15 @@ def get_attestation(
     db: Session = Depends(get_db),
     current_user=Depends(get_currently_authenticated_user),
 ):
-    try:
-        attestation_exist = attestation_repo.get_by_user_id(db, user_id=current_user.id)
-        if not attestation_exist:
-            raise HTTPException(
-                status_code=HTTP_404_NOT_FOUND,
-                detail="You do not have any signature or stamp saved",
-            )
-
-        return AttestationInResponse(
-            user_id=attestation_exist.user_id,
-            signature=attestation_exist.signature,
-            stamp=attestation_exist.stamp,
+    attestation_exist = attestation_repo.get_by_user_id(db, user_id=current_user.id)
+    if not attestation_exist:
+        raise HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail="You do not have any signature or stamp saved",
         )
 
-    except Exception as e:
-        raise HTTPException(status_code=HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+    return AttestationInResponse(
+        user_id=attestation_exist.user_id,
+        signature=attestation_exist.signature,
+        stamp=attestation_exist.stamp,
+    )
