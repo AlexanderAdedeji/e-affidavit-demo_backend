@@ -6,7 +6,7 @@ import starlette.responses as _responses
 from app.core.settings.config import Settings
 from app.database.base import Base
 
-import psycopg2
+
 
 Base.metadata.create_all(bind=engine)
 origins = ["*"]

@@ -86,7 +86,7 @@ def generate_document_ref(
     try:
         document_ref = generate_random_string(9)
         buffered = generate_qr_code(
-            f"https://e-affidavit-portal-demo.azurewebsites.net/qr-searchDocument/{document_ref.upper()}"
+            f"https://qr-searchDocument/{document_ref.upper()}"
         )
         img_str = security.convert_to_base_64(buffered.getvalue())
         document_repo.update(
@@ -228,6 +228,8 @@ def search_document_by_ref(
     db: Session = Depends(get_db),
     current_user=Depends(get_currently_authenticated_user),
 ):
+    
+    
     document = document_repo.get_by_ref(db, ref=document_ref)
     if not document:
         raise ObjectNotFoundException(detail="this document was not found")
