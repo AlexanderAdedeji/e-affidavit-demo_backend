@@ -9,7 +9,7 @@ from app.database.base import Base
 
 
 Base.metadata.create_all(bind=engine)
-origins = ["*"]
+origins = ["https://e-affidavit.vercel.app/","https://e-affidavit.vercel.app"]
 
 settings= Settings()
 
